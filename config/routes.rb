@@ -1,10 +1,14 @@
 Wikijuju::Application.routes.draw do
+  get "wiki/create"
+
   devise_for :users
 
-  get "welcome/index"
+  get "index" => "welcome#index"
 
-  get "welcome/about"
+  get "about" => "welcome#about"
 
   root to: 'welcome#index'
+
+  resources :wikis, only: [:new, :create, :show]
 
 end
