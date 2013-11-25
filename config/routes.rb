@@ -9,6 +9,6 @@ Wikijuju::Application.routes.draw do
 
   root to: 'welcome#index'
 
-  resources :wikis, only: [:new, :create, :show]
+  resources :wikis, only: [:new, :create, :show, :index]
 
 end
