@@ -16,6 +16,7 @@ class WikisController < ApplicationController
 
   def show
     @wiki = Wiki.find(params[:id])
+    @pages = Page.where(wiki_id: params[:id])
   end
 
   def index

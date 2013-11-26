@@ -1,7 +1,7 @@
 <h1><%= @wiki.name %></h1>
 
-<%= render partial: 'wikis/page', collection: @pages %>
+<%= render partial: 'pages/page', collection: @pages, locals: { wiki: @wiki } %>
 
 <p>
-  <%= link_to "Create a New Page", new_page_path(wiki_id: @wiki.id), class: 'btn btn-primary btn-medium' %>
+  <%= link_to "Create a New Page", new_wiki_page_path(wiki_id: @wiki.id), class: 'btn btn-primary btn-medium' %>
 </p>

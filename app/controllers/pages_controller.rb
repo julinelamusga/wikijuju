@@ -5,15 +5,13 @@ class PagesController < ApplicationController
   end
 
   def create
-    pg = params[:page]
-    @page = Page.new
-    @page.title = pg[:title]
-    @page.body = pg[:body]
-    @page.wiki_id = pg[:wiki]
+    @page = Page.new(params[:page])
+    @wiki = Wiki.find(params[:wiki_id])
     @page.user_id = current_user.id
+    @page.wiki = @wiki
     if @page.save
       flash[:notice] = "Your page was saved."
-      redirect_to @page
+      redirect_to [@wiki, @page]
     else
       flash.now[:error] = "There was an error saving your page."
       render :new
@@ -21,10 +19,7 @@ class PagesController < ApplicationController
   end
 
   def show
+    @wiki = Wiki.find(params[:wiki_id])
     @page = Page.find(params[:id])
-  end
-
-  def index
-    @pages = Page.all
   end
 end
