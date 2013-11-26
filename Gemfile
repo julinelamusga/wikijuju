@@ -46,4 +46,6 @@ gem 'jquery-rails'
 
 gem 'devise'
 gem 'dynamic_form'
-
+gem 'stripe'
+gem 'redcarpet'
+gem 'friendly_id'
