@@ -3,4 +3,8 @@ class Wiki < ActiveRecord::Base
   has_many :pages
   belongs_to :user
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  # def self.authorized(user)
+  #   Possible refactor
+  # end
 end
