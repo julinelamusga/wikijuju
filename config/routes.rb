@@ -1,4 +1,6 @@
 Wikijuju::Application.routes.draw do
+  get "subscriptions/new"
+
   get "wiki/create"
 
   devise_for :users
@@ -12,5 +14,7 @@ Wikijuju::Application.routes.draw do
   resources :wikis, only: [:new, :create, :show, :index] do
     resources :pages, only: [:new, :create, :show]
   end
+
+  resources :subscriptions, only: [:create]
 
 end

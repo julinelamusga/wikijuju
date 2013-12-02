@@ -4,6 +4,11 @@
 
   <p>
     <%= link_to "Create a JuJu", new_wiki_path, class: 'btn btn-primary btn-large' %>
+
+    <% if current_user && !current_user.premium %>
+      <%= render partial: "subscriptions/form" %>
+    <% end %>
+
   </p>
 
 </div>
