@@ -24,11 +24,7 @@ class WikisController < ApplicationController
   end
 
   def index
-    if current_user && current_user.premium
-      @wikis = Wiki.all
-    else
-      @wikis = Wiki.where(premium: false)
-    end
+    @wikis = Wiki.all_public
   end
 
   def check_auth(wiki)

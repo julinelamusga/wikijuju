@@ -1,7 +1,11 @@
 <h1><%= "#{@user.name}'s Profile" %></h1>
 <h3>Public JuJus</h3>
 
-<%= render partial: "wikis/wiki", collection: @wikis %>
+<%= render partial: "wikis/wiki", collection: @user.public_wikis %>
 
 <h3>Private JuJus</h3>
-
+<% if @user.premium; %>
+  <%= render partial: "wikis/wiki", collection: @user.private_wikis %>
+<% else %>
+  <%= render partial: "subscriptions/form" %>
+<% end %>

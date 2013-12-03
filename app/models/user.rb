@@ -11,4 +11,12 @@ class User < ActiveRecord::Base
 
   has_many :wikis
   has_many :pages
+
+  def public_wikis
+    Wiki.users_public_wikis(id)
+  end
+
+  def private_wikis
+    Wiki.users_private_wikis(id)
+  end
 end
