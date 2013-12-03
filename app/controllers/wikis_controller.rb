@@ -8,6 +8,7 @@ class WikisController < ApplicationController
   def create
     @wiki = Wiki.new(params[:wiki])
     check_auth(@wiki)
+    @wiki.user = current_user
     if @wiki.save
       flash[:notice] = "Your JuJu was saved."
       redirect_to @wiki
@@ -19,7 +20,7 @@ class WikisController < ApplicationController
 
   def show
     @wiki = Wiki.find(params[:id])
-    @pages = Page.where(wiki_id: params[:id])
+    @pages = @wiki.pages
   end
 
   def index
