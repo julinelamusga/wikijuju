@@ -1,4 +1,8 @@
 Wikijuju::Application.routes.draw do
+  get "collaborators/new"
+
+  get "collaborators/create"
+
   get "users/show"
 
   get "subscriptions/new"
@@ -15,6 +19,7 @@ Wikijuju::Application.routes.draw do
 
   resources :wikis, only: [:new, :create, :show, :index] do
     resources :pages, only: [:new, :create, :show]
+    resources :collaborators, only: [:new, :create]
   end
 
   resources :subscriptions, only: [:create]

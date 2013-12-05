@@ -1,4 +1,9 @@
 <h1><%= "#{@user.name}'s Profile" %></h1>
+
+<div>
+  <%= link_to "Create a JuJu", new_wiki_path, class: 'btn btn-primary btn-medium' %>
+</div>
+
 <h3>Public JuJus</h3>
 
 <%= render partial: "wikis/wiki", collection: @user.public_wikis %>
