@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 
   has_many :wikis
   has_many :pages
+  has_many :collaborations
 
   def public_wikis
     Wiki.users_public_wikis(id)

@@ -9,9 +9,13 @@ group :production do
   gem 'pg'
 end
 
-group :development do
+group :development, :test do
   gem 'sqlite3'
   gem 'faker'
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails', '~> 4.0'
 end
 
 
