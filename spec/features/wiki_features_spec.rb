@@ -1,5 +1,12 @@
 require "spec_helper"
 
+def sign_in user
+  visit new_user_session_path
+  fill_in "Email", with: user.email
+  fill_in "Password", with: "helloworld"
+  click_on "Sign in"
+end
+
 feature "Index page works" do
   scenario "all cases" do
     visit root_path
@@ -8,22 +15,51 @@ feature "Index page works" do
   end
 end
 
-feature "Prevent unauthorized viewing of premium juju" do
+feature "Create juju" do
   scenario "when user not signed in" do
-    user = User.new(name: Faker::Name.name, 
-                   email: "premium@example.com",
-                   password: "helloworld",
-                   password_confirmation: "helloworld")
-    user.premium = true
-    user.skip_confirmation!
-    user.save
+    visit root_path
 
-    wiki = user.wikis.build(name: "Premium JuJu")
-    wiki.premium = true
-    wiki.save
+    click_on "Create a JuJu"
 
-    visit wiki_path(wiki.id)
-    expect(page).to have_content("not authorized")
+    expect(page).to have_content "Sign in or sign up to continue."
   end
-  scenario "when user not premium"
+end
+
+feature "User views premium juju" do
+  scenario "when user not signed in" do
+    wiki = FactoryGirl.create(:premium_wiki)
+
+    visit wiki_path(wiki)
+
+    expect(page).to have_content "Sign in or sign up to continue."
+  end
+  scenario "when user not premium" do
+    wiki = FactoryGirl.create(:premium_wiki)
+    user = FactoryGirl.create(:user)
+
+    sign_in user
+
+    visit wiki_path(wiki)
+
+    expect(page).to have_content "You are not authorized to view this JuJu."
+  end
+  scenario "when user is a collaborator of the JuJu" do
+    wiki = FactoryGirl.create(:premium_wiki_with_collaborator)
+    
+    sign_in wiki.users.first
+
+    visit wiki_path(wiki)
+
+    expect(page).to have_content wiki.name
+  end
+  scenario "when user is the owner of the JuJu" do
+    wiki = FactoryGirl.create(:premium_wiki)
+    user = wiki.user
+
+    sign_in user
+
+    visit wiki_path(wiki)
+
+    expect(page).to have_content wiki.name
+  end
 end

@@ -2,12 +2,12 @@ class WikisController < ApplicationController
 
   def new
     @wiki = Wiki.new
-    check_auth(@wiki)
+    check_create_auth(@wiki)
   end
 
   def create
     @wiki = Wiki.new(params[:wiki])
-    check_auth(@wiki)
+    check_create_auth(@wiki)
     @wiki.user = current_user
     if @wiki.save
       flash[:notice] = "Your JuJu was saved."
@@ -20,6 +20,7 @@ class WikisController < ApplicationController
 
   def show
     @wiki = Wiki.find(params[:id])
+    check_show_auth(@wiki)
     @pages = @wiki.pages
   end
 
@@ -27,10 +28,22 @@ class WikisController < ApplicationController
     @wikis = Wiki.all_public
   end
 
-  def check_auth(wiki)
+  def check_create_auth(wiki)
     authorize wiki
   rescue
-    flash[:error] = "Create an account or sign in to create a JuJu."
-    redirect_to :root
+    flash[:error] = "Sign in or sign up to continue."
+    redirect_to :new_user_session
+  end
+
+  def check_show_auth(wiki)
+    authorize wiki
+  rescue
+    if current_user
+      flash[:error] = "You are not authorized to view this JuJu."
+      redirect_to :root
+    else
+      flash[:error] = "Sign in or sign up to continue."
+      redirect_to :new_user_session
+    end
   end
 end

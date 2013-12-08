@@ -26,6 +26,6 @@ class WikiPolicy
   end
 
   def show?
-    @user.premium?
+    @user && (@wiki.user == @user || @wiki.users.include?(@user))
   end
 end
