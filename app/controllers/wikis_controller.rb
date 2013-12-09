@@ -1,13 +1,13 @@
 class WikisController < ApplicationController
 
+  before_filter :authenticate_user!, only: [:create, :new]
+
   def new
     @wiki = Wiki.new
-    check_create_auth(@wiki)
   end
 
   def create
     @wiki = Wiki.new(params[:wiki])
-    check_create_auth(@wiki)
     @wiki.user = current_user
     if @wiki.save
       flash[:notice] = "Your JuJu was saved."
@@ -20,30 +20,13 @@ class WikisController < ApplicationController
 
   def show
     @wiki = Wiki.find(params[:id])
-    check_show_auth(@wiki)
+    authenticate_user! if @wiki.premium
+    authorize @wiki
     @pages = @wiki.pages
   end
 
   def index
     @wikis = Wiki.all_public
   end
-
-  def check_create_auth(wiki)
-    authorize wiki
-  rescue
-    flash[:error] = "Sign in or sign up to continue."
-    redirect_to :new_user_session
-  end
-
-  def check_show_auth(wiki)
-    authorize wiki
-  rescue
-    if current_user
-      flash[:error] = "You are not authorized to view this JuJu."
-      redirect_to :root
-    else
-      flash[:error] = "Sign in or sign up to continue."
-      redirect_to :new_user_session
-    end
-  end
+  
 end

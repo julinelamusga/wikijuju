@@ -21,7 +21,7 @@ feature "Create juju" do
 
     click_on "Create a JuJu"
 
-    expect(page).to have_content "Sign in or sign up to continue."
+    expect(page).to have_content "You need to sign in or sign up before continuing."
   end
 end
 
@@ -31,7 +31,7 @@ feature "User views premium juju" do
 
     visit wiki_path(wiki)
 
-    expect(page).to have_content "Sign in or sign up to continue."
+    expect(page).to have_content "You need to sign in or sign up before continuing."
   end
   scenario "when user not premium" do
     wiki = FactoryGirl.create(:premium_wiki)
@@ -41,7 +41,7 @@ feature "User views premium juju" do
 
     visit wiki_path(wiki)
 
-    expect(page).to have_content "You are not authorized to view this JuJu."
+    expect(page).to have_content "You are not authorized to perform this action."
   end
   scenario "when user is a collaborator of the JuJu" do
     wiki = FactoryGirl.create(:premium_wiki_with_collaborator)
