@@ -1,4 +1,7 @@
 class Wiki < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: [:slugged, :history]
+
   attr_accessible :name, :premium
   has_many :pages
   has_many :collaborations

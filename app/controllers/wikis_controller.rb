@@ -23,6 +23,9 @@ class WikisController < ApplicationController
     authenticate_user! if @wiki.premium
     authorize @wiki
     @pages = @wiki.pages
+    if request.path != wiki_path(@wiki)
+      redirect_to @wiki, status: :moved_permanently
+    end
   end
 
   def index
